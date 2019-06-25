@@ -16,7 +16,7 @@ DecoderTest::~DecoderTest()
 int main(int argv, char** argc)
 {
 	video_decoder decoder;
-	decoder.init(300, 500, "D:\\H.264 sample video.mp4");
+	decoder.init(300, 500, "D:\\1280.avi");
 	decoder.start();
 
 	return 0;

@@ -16,7 +16,7 @@ extern "C" {
 	#include <libavutil\mathematics.h>
 }
 
-#define INBUF_SIZE					 4096
+#define INBUF_SIZE					 8192
 #define USE_SWSCALE					 0
 
 //test different codec
@@ -48,6 +48,7 @@ private:
 	std::ifstream			fp_in;
 	std::ofstream			fp_out;
 	AVFrame	*				pFrame;
+	AVFrame	*				pRGBFrame;
 
 	char					in_buffer[INBUF_SIZE + AV_INPUT_BUFFER_PADDING_SIZE] = { 0 };
 	char *					cur_ptr;
@@ -56,9 +57,10 @@ private:
 	int						ret, got_picture;
 	int						y_size;
 	int						VideoStreamIndex = -1;
-
+	FILE *fin = NULL; 
+	FILE *fout = NULL;
 	void decode(AVCodecContext *dec_ctx, AVFrame *frame, AVPacket *pkt, FILE *f);
-
+	void pgm_save(unsigned char *buf, int wrap, int xsize, int ysize, FILE *f);
 public:
 
 	VIDEODECODER_API void init(int width, int height, std::string video_file_path);
