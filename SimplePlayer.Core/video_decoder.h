@@ -14,6 +14,7 @@ extern "C" {
 	#include <libavutil\frame.h>
 	#include <libavutil\time.h>
 	#include <libavutil\mathematics.h>
+	#include <libavutil\imgutils.h>
 }
 
 #define INBUF_SIZE					 8192
@@ -50,8 +51,8 @@ private:
 	AVFrame	*				pFrame;
 	AVFrame	*				pRGBFrame;
 
-	char					in_buffer[INBUF_SIZE + AV_INPUT_BUFFER_PADDING_SIZE] = { 0 };
-	char *					cur_ptr;
+	uint8_t					in_buffer[INBUF_SIZE + AV_INPUT_BUFFER_PADDING_SIZE];
+	uint8_t *				cur_ptr;
 	long long				cur_size;
 	AVPacket*				packet;
 	int						ret, got_picture;
@@ -59,11 +60,17 @@ private:
 	int						VideoStreamIndex = -1;
 	FILE *fin = NULL; 
 	FILE *fout = NULL;
-	void decode(AVCodecContext *dec_ctx, AVFrame *frame, AVPacket *pkt, FILE *f);
-	void pgm_save(unsigned char *buf, int wrap, int xsize, int ysize, FILE *f);
+	void decode(AVCodecContext *dec_ctx, AVFrame *frame, AVPacket *pkt,
+		const char *filename);
+	void pgm_save(unsigned char *buf, int wrap, int xsize, int ysize,
+		char *filename);
+
+	void convertToRGB(int width, int height, AVFrame* yuyv_image, AVFrame *dstFrame);
+	void bitmap_save(unsigned char *buf, int size, char *filename);
 public:
 
 	VIDEODECODER_API void init(int width, int height, std::string video_file_path);
 	VIDEODECODER_API void start();
+	VIDEODECODER_API void getDate(unsigned char* data);
 };
 

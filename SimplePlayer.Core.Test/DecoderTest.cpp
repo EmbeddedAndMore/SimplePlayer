@@ -16,7 +16,7 @@ DecoderTest::~DecoderTest()
 int main(int argv, char** argc)
 {
 	video_decoder decoder;
-	decoder.init(300, 500, "D:\\1280.avi");
+	decoder.init(300, 500, "D:\\test.avi");
 	decoder.start();
 
 	return 0;
